@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="EuroTyper:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="EuroTyper.war">
+      <element id="artifact" artifact-name="EuroTyper:war exploded" />
+    </root>
+  </artifact>
+</component>

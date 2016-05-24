@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <import resource="classpath:hibernate.cfg.xml"/>
+
+    <bean id="userCriteria" class="com.euro.typer.data.source.criteria.UserCriteria">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="matchCriteria" class="com.euro.typer.data.source.criteria.MatchCriteria">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="playerTypeCriteria" class="com.euro.typer.data.source.criteria.PlayerTypeCriteria">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="dailyResultPackCriteria" class="com.euro.typer.data.source.criteria.DailyResultPackCriteria">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="serviceDao" class="com.euro.typer.data.source.dao.UserDao">
+        <constructor-arg ref="userCriteria"/>
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="matchDao" class="com.euro.typer.data.source.dao.MatchDao">
+        <constructor-arg ref="matchCriteria"/>
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="playerTypeDao" class="com.euro.typer.data.source.dao.PlayerTypeDao">
+        <constructor-arg ref="playerTypeCriteria"/>
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="dailyResultPackDao" class="com.euro.typer.data.source.dao.DailyResultPackDao">
+        <constructor-arg ref="dailyResultPackCriteria"/>
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <bean id="dailyResultDao" class="com.euro.typer.data.source.dao.DailyResultDao">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+</beans>
