@@ -38,8 +38,9 @@ public class PlayerTypeDao {
 //                .collect(Collectors.toList());
     }
 
-    public List<Player> getAllPlayers() {
-        return sessionFactory.openSession().createCriteria(Player.class).list();
+    public List<PlayerType> getByPlayer(Player player)
+    {
+        return playerTypeCriteria.getByPlayer(player);
     }
 
     @Transactional

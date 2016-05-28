@@ -1,8 +1,11 @@
 package com.euro.typer.data.source.dao;
 
 import com.euro.typer.data.source.criteria.UserCriteria;
+import com.euro.typer.data.source.entity.Match;
 import com.euro.typer.data.source.entity.Player;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,5 +29,13 @@ public class UserDao {
     public List<Player> getAllUsers()
     {
         return sessionFactory.openSession().createCriteria(Player.class).list();
+    }
+
+    @Transactional
+    public void saveUser(Player player)
+    {
+        Session session = sessionFactory.openSession();
+        session.save(player);
+        session.flush();
     }
 }

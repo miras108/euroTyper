@@ -36,6 +36,14 @@ public class PlayerTypeCriteria {
         return criteria.list();
     }
 
+    public List<PlayerType> getByPlayer(Player player) {
+        Session session = openSession();
+        Criteria criteria = session.createCriteria(PlayerType.class)
+                .add(Restrictions.eq("player", player));
+
+        return  criteria.list();
+    }
+
     public Session openSession() {
         return sessionFactory.openSession();
     }
