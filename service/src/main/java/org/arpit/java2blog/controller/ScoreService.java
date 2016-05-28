@@ -31,7 +31,7 @@ public class ScoreService {
 	private OverallScoreCalculator overallScoreCalculator;
 
 	@RequestMapping(value = "/creteDailyScore", method = RequestMethod.GET,headers="Accept=application/json")
-	public String getCountries(
+	public String createDailyScore(
 			@RequestParam(value="date") String stringDate) throws ParseException {
 		Date date = null;
 		try {

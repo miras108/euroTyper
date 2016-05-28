@@ -14,5 +14,9 @@
     <bean id="dayScoreCalculator" class="org.arpit.java2blog.score.DayScoreCalculator"/>
     <bean id="overallScoreCalculator" class="org.arpit.java2blog.score.OverallScoreCalculator"/>
 
+    <bean id="dailyScoreExecutor" class="org.arpit.java2blog.score.DailyScoreExecutor">
+        <constructor-arg ref="dayScoreCreator"/>
+    </bean>
+
 </beans>
 
