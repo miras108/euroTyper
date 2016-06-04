@@ -4,6 +4,7 @@ import com.euro.typer.data.source.criteria.DateHelper;
 import com.euro.typer.data.source.criteria.MatchCriteria;
 import com.euro.typer.data.source.entity.Country;
 import com.euro.typer.data.source.entity.Match;
+import com.euro.typer.data.source.entity.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +60,11 @@ public class MatchDao {
         Date toDate = DateHelper.getDateWithoutTime(DateHelper.getTomorrowDate(matchDate));
 
         return matchCriteria.getByDate(fromDate, toDate);
+    }
+
+    public List<Match> getAllMatches()
+    {
+        return sessionFactory.openSession().createCriteria(Match.class).list();
     }
 
     @Transactional

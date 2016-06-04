@@ -1,9 +1,13 @@
 package org.arpit.java2blog.controller;
 
+import com.euro.typer.data.source.dao.MatchDao;
 import com.euro.typer.data.source.dao.PlayerTypeDao;
 import com.euro.typer.data.source.dao.UserDao;
+import com.euro.typer.data.source.entity.Match;
 import com.euro.typer.data.source.entity.Player;
 import com.euro.typer.data.source.entity.PlayerType;
+import org.arpit.java2blog.user.MatchScore;
+import org.arpit.java2blog.user.UserMatchRS;
 import org.arpit.java2blog.user.UserTypesRS;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +23,7 @@ public class UserController {
 
 	private UserDao userDao;
 	private PlayerTypeDao playerTypeDao;
+	private MatchDao matchDao;
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET, headers = "Accept=application/json")
 	public String addUser(
@@ -85,6 +91,39 @@ public class UserController {
 		return validRS;
 	}
 
+	@RequestMapping(value = "/getUserMatches", method = RequestMethod.GET, headers = "Accept=application/json")
+	public UserMatchRS getUserMatches(
+			@RequestParam(value = "username") String username) {
+
+		Player player = userDao.getUserByUsername(username);
+		if(player == null)
+		{
+			UserMatchRS errorRS = new UserMatchRS();
+			errorRS.setErrorMessage("Invalid Username");
+			return errorRS;
+		}
+
+		List<Match> matches = matchDao.getAllMatches();
+		List<MatchScore> matchScores = new ArrayList<>();
+
+		for(Match match : matches)
+		{
+			PlayerType playerType = playerTypeDao.getByPlayerAndMatch(player, match);
+
+			MatchScore matchScore = new MatchScore();
+			matchScore.setMatch(match);
+			matchScore.setType(playerType.getTypedScore());
+			matchScores.add(matchScore);
+		}
+
+		UserMatchRS userMatchRS = new UserMatchRS();
+		userMatchRS.setPlayer(player);
+		userMatchRS.setMatchScore(matchScores);
+
+		return userMatchRS;
+	}
+
+
 	@Resource
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
@@ -93,5 +132,10 @@ public class UserController {
 	@Resource
 	public void setPlayerTypeDao(PlayerTypeDao playerTypeDao) {
 		this.playerTypeDao = playerTypeDao;
+	}
+
+	@Resource
+	public void setMatchDao(MatchDao matchDao) {
+		this.matchDao = matchDao;
 	}
 }
