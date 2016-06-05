@@ -112,7 +112,9 @@ public class UserController {
 
 			MatchScore matchScore = new MatchScore();
 			matchScore.setMatch(match);
-			matchScore.setType(playerType.getTypedScore());
+			if(playerType != null) {
+				matchScore.setType(playerType.getTypedScore());
+			}
 			matchScores.add(matchScore);
 		}
 
