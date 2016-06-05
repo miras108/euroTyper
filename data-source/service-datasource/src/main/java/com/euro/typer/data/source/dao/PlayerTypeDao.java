@@ -50,4 +50,12 @@ public class PlayerTypeDao {
         session.save(playerType);
         session.flush();
     }
+
+    @Transactional
+    public void updatePlayerType(PlayerType playerType)
+    {
+        Session session = sessionFactory.openSession();
+        session.update(playerType);
+        session.flush();
+    }
 }

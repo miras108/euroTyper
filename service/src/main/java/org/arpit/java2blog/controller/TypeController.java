@@ -22,9 +22,6 @@ public class TypeController {
 	private final static String SCORE_REGEX = "^[0-9]*:[0-9]*$";
 
 	private UserDao userDao;
-	private MatchDao matchDao;
-	private PlayerTypeDao playerTypeDao;
-
 	@RequestMapping(value = "/type", method = RequestMethod.GET,headers="Accept=application/json")
 //	public List<Country> getCountries(
 	public String getCountries(
@@ -79,20 +76,25 @@ public class TypeController {
 
 		score = correctScore(score, country1, match);
 
-		if(playerTypeDao.getByPlayerAndMatch(requestedPlayer, match) != null)
+		PlayerType playerType = playerTypeDao.getByPlayerAndMatch(requestedPlayer, match);
+		if(playerType != null)
 		{
+			playerType.setTypedScore(score);
+			playerTypeDao.updatePlayerType(playerType);
 			return "Type for this match already exists";
 		}
-
-		PlayerType playerType = new PlayerType();
-		playerType.setMatch(match);
-		playerType.setPlayer(requestedPlayer);
-		playerType.setTypedScore(score);
-
-		playerTypeDao.savePlayerType(playerType);
-
-		return "Type saved Successfully";
+		else {
+			playerType = new PlayerType();
+			playerType.setMatch(match);
+			playerType.setPlayer(requestedPlayer);
+			playerType.setTypedScore(score);
+			playerTypeDao.savePlayerType(playerType);
+			return "Type saved Successfully";
+		}
 	}
+	private MatchDao matchDao;
+
+	private PlayerTypeDao playerTypeDao;
 
 	private String correctScore(@RequestParam(value = "score") String score, Country country1, Match match) {
 		if(country1 != match.getCountry1())
