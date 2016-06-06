@@ -26,14 +26,6 @@ public class MatchServiceController {
 			@RequestParam(value="date") String date,
 			@RequestParam(value = "country1") String stringCountry1,
 			@RequestParam(value = "country2") String stringCountry2) throws ParseException {
-		try {
-			if(!matchDao.getMatchForDayByDateWithTime(date).isEmpty())
-            {
-                return "Match already defined";
-            }
-		} catch (ParseException e) {
-			return "Incorrect date, correct date format: dd.MM.yyyy_HH:mm";
-		}
 
 		Country country1 = Country.getFromString(stringCountry1);
 		if(country1 == null)
@@ -46,6 +38,16 @@ public class MatchServiceController {
 		{
 			return "invalid country2";
 		}
+
+		try {
+			if(matchDao.getMatchByCriteria(country1, country2, date) != null)
+			{
+				return "Match already defined";
+			}
+		} catch (ParseException e) {
+			return "Incorrect date, correct date format: dd.MM.yyyy_HH:mm";
+		}
+
 
 		Match match = new Match();
 		match.setCountry1(country1);
