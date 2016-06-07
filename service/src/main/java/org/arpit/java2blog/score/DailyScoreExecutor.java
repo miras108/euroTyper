@@ -11,7 +11,7 @@ import javax.annotation.Resource;
  */
 public class DailyScoreExecutor {
 
-    public static final String CRON_EXPRESSION = "0 0 1 * * ?";
+    public static final String CRON_EXPRESSION = "0 0 23 * * ?";
     private DayScoreCreator dayScoreCreator;
 
     public DailyScoreExecutor(DayScoreCreator dayScoreCreator) {
